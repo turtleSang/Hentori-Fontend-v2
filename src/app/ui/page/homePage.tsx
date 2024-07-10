@@ -6,6 +6,7 @@ import Logo from "../layouts/logo";
 import clsx from "clsx";
 
 import { FormContext } from "@/libs/context";
+import LoadingFullPage from "../components/loading-full-page";
 
 export default function () {
   let [activeRegisterForm, setRegisterForm] = useState(false);
@@ -15,12 +16,12 @@ export default function () {
   };
 
   return (
-    <div className="bg-slate-50 rounded-md w-4/5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 absolute top-1/2 md:flex md:flex-row md:justify-around md:items-center md:w-3/5">
+    <div className="bg-slate-50 rounded-md w-4/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 absolute  md:flex md:flex-row md:justify-around md:items-center md:w-3/5">
       <Logo />
       <div
         className={clsx(
           "relative overflow-y-hidden w-full duration-200",
-          activeRegisterForm ? "h-64" : "h-48"
+          activeRegisterForm ? "h-[460px]" : "h-52"
         )}
       >
         <FormContext.Provider value={{ handleForm: handleRegisterForm }}>

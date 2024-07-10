@@ -15,6 +15,21 @@ const config: Config = {
         yellow: {
           base: "#C58325"
         }
+      },
+      animation: {
+        'xoaycham': "xoay 2s infinite ease-in-out"
+      }
+      ,
+      keyframes: {
+        xoay: {
+          '0%': {
+            transform: 'rotate(0deg) scaleX(0)'
+
+          },
+          '100%': {
+            transform: 'rotate(360deg) scaleX(1)'
+          },
+        }
       }
     },
   },

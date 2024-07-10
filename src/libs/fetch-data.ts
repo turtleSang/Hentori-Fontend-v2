@@ -1,34 +1,50 @@
-import axios from "axios"
-import { useEffect, useState } from "react";
+'use client'
+import axios, { AxiosError } from "axios"
+import { useContext, useEffect, useState } from "react";
 
 enum typeMethod {
     GET, POST, PUT, DELETE
 }
 
-let rootUrl: string = "http://localhost:8080/api/";
+let rootUrl: string = "http://localhost:8080/api";
 
 // Admin url
 let adminUrl: string = `${rootUrl}/admin`;
 
 export let urlLogin: string = `${adminUrl}/login`;
+export let urlCheckLogin: string = `${adminUrl}/check`;
+export let urlRegister: string = `${adminUrl}/register`
 
+export interface CheckLogin {
+    isLogin: boolean,
+    username: string,
+    listAuthorize: { authority: string }[]
+    erros: AxiosError | null,
+}
 
-export async function useFetch(url: string, method: string, params?: {}, body?: {}) {
-    let [data, setData] = useState(null);
-    let [loadding, setLoading] = useState(false);
+export interface BodyResponse {
+    username: string,
+    listAuthorize: { authority: string }[]
+}
+
+export function useLogin() {
+    let [data, setData] = useState<CheckLogin>({ isLogin: false, listAuthorize: [{ authority: "" }], username: "", erros: null });
     useEffect(() => {
-        async function fetch() {
-            setLoading(true)
+        async function checkLogin() {
             try {
-                let res = await axios({ method, url, params, data: body });
-                setData(res.data);
-                setLoading(false);
-            } catch (err) {
-                console.log(err);
-                setLoading(false);
+                let res = await axios({ method: "get", url: urlCheckLogin, withCredentials: true })
+                let { username, listAuthorize } = res.data as BodyResponse;
+                data = { ...data, username, listAuthorize, isLogin: true }
+                setData(data);
+            } catch (err: any) {
+                let erro = err as AxiosError;
+                if (erro) {
+                    data = { ...data, erros: erro }
+                }
             }
-
         }
-    }, [url])
-    return { data, loadding };
+        checkLogin();
+    }, [])
+    return data;
+
 }

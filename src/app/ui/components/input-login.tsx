@@ -16,7 +16,7 @@ export default function InputLogin({
   typeInput: HTMLInputTypeAttribute;
   value: string;
   handleUser: (txt: string) => void;
-  handleValidate?: (txt: string) => boolean;
+  handleValidate?: (txt: string) => { check: boolean; txtArlert: string };
 }) {
   let [allowSee, setAllowSee] = useState(false);
   let [type, setType] = useState(typeInput);
@@ -44,12 +44,11 @@ export default function InputLogin({
     }
     if (handleValidate) {
       timeoutId = setTimeout(() => {
-        if (handleValidate(txtInput)) {
+        let result = handleValidate(txtInput);
+        if (result.check) {
           setAlert("");
         } else {
-          setAlert(
-            txtLable + " chỉ bao gồm chữ và số và chỉ dài 12 ký tự không dấu"
-          );
+          setAlert(result.txtArlert);
         }
       }, 500);
     }
